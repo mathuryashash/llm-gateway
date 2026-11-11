@@ -3,11 +3,11 @@
 ## Bullet points
 
 - Built Go LLM gateway with OpenAI-compatible API, circuit breaking, Redis-backed
-  token-bucket rate limiting, and response caching; 0% error rate at 461 req/s
-  (fake upstream, 20 VUs, i7-14700HX).
+  token-bucket rate limiting, and response caching; adds ~1 ms p50 / ~3 ms p95 over a
+  direct call (k6, 20 VUs, fake upstream, laptop).
 
-- Implemented per-route circuit breaker (closed/open/half-open) and fallback chain
-  across 4 providers; verified 100% success rate when primary returns 429 via k6.
+- Implemented per-route circuit breaker (closed/open/half-open) and an ordered fallback
+  chain; integration tests cover 429 -> fallback and Retry-After.
 
 - Used atomic Redis Lua scripts for shared rate-limit state across replicas;
   integration-tested with testcontainers-go Redis (2 gateway instances, shared limit).

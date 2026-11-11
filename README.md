@@ -79,8 +79,8 @@ All numbers from `VERIFY.md`. Setup: Gateway + fakeupstream on localhost, no Red
 | Metric | Value |
 |--------|-------|
 | Gateway overhead p50 | ~1 ms over direct call |
-| Gateway overhead p95 | ~2 ms |
-| Throughput at 20 VUs | ~461 req/s, 0% errors |
+| Gateway overhead p95 | ~3 ms |
+| Throughput at 20 VUs | ~461 iterations/s (each = 1 gateway + 1 direct call), 0% errors |
 | Fallback success rate | 100% (429 → next provider) |
 | Cache HIT latency | < 1 ms (requires Redis) |
 | Go benchmark: proxy handler | 197 µs/op, 59 kB/op |
