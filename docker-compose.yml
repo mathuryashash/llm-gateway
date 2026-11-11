@@ -32,7 +32,7 @@ services:
       GATEWAY_REDIS_ADDR: redis:6379
       GATEWAY_LOG_LEVEL: info
     volumes:
-      - ./config.example.yaml:/config.yaml:ro
+      - ./config.compose.yaml:/config.yaml:ro
     command: ["-config", "/config.yaml"]
     depends_on:
       - redis

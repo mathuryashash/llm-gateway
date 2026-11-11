@@ -1,0 +1,80 @@
+server:
+  addr: ":18100"
+  max_body_bytes: 1048576   # 1 MB
+  read_timeout_sec: 30
+  write_timeout_sec: 120
+  idle_timeout_sec: 60
+
+redis:
+  addr: "redis:6379"
+
+log_level: "info"
+
+rate_limit:
+  fail_open: true   # allow traffic when Redis is down
+
+cache:
+  enabled: true
+  ttl_sec: 300
+
+breaker:
+  failure_threshold: 3
+  recovery_sec: 30
+
+otel:
+  enabled: false
+  endpoint: "localhost:4318"
+  service_name: "llm-gateway"
+
+providers:
+  - name: groq
+    base_url: https://api.groq.com/openai/v1
+    key_env: GROQ_API_KEY
+    timeout_sec: 60
+
+  - name: gemini
+    base_url: https://generativelanguage.googleapis.com/v1beta/openai
+    key_env: GEMINI_API_KEY
+    timeout_sec: 60
+
+  - name: nebius
+    base_url: https://api.studio.nebius.com/v1
+    key_env: NEBIUS_API_KEY
+    timeout_sec: 60
+
+  - name: nvidia
+    base_url: https://integrate.api.nvidia.com/v1
+    key_env: NVIDIA_API_KEY
+    timeout_sec: 60
+
+  - name: fake
+    base_url: http://fakeupstream:18101
+    key_env: FAKE_API_KEY
+    timeout_sec: 10
+
+routes:
+  # fast: Groq first (fastest), fallback Gemini, then Nebius
+  - alias: fast
+    providers: [groq, gemini, nebius]
+    models:
+      - llama-3.1-8b-instant
+      - gemini-1.5-flash
+      - meta-llama/Meta-Llama-3.1-8B-Instruct
+
+  # smart: 70B class models with fallback
+  - alias: smart
+    providers: [groq, nebius, nvidia]
+    models:
+      - llama-3.3-70b-versatile
+      - meta-llama/Meta-Llama-3.1-70B-Instruct
+      - meta/llama-3.1-70b-instruct
+
+  # demo: fake upstream only (no real API key needed)
+  - alias: demo
+    providers: [fake]
+    models: [fake-model]
+
+# client_keys: list of SHA-256-hashed client API keys.
+# To add a key: echo -n "your-raw-key" | sha256sum
+# (empty list = allow all requests without auth — for dev/test only)
+client_keys: []
