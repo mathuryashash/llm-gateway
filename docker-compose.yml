@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: llm-gateway-redis
+    ports:
+      - "18102:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  fakeupstream:
+    build:
+      context: .
+      dockerfile: Dockerfile.fakeupstream
+    container_name: llm-gateway-fakeupstream
+    ports:
+      - "18101:18101"
+    command: ["-addr", ":18101", "-latency", "20", "-rate429", "0.1"]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:18101/healthz || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  gateway:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: llm-gateway
+    ports:
+      - "18100:18100"
+    environment:
+      GATEWAY_REDIS_ADDR: redis:6379
+      GATEWAY_LOG_LEVEL: info
+    volumes:
+      - ./config.example.yaml:/config.yaml:ro
+    command: ["-config", "/config.yaml"]
+    depends_on:
+      redis:
+        condition: service_healthy
+      fakeupstream:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:18100/healthz || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 5

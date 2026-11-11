@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Build, Lint, Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: "1.27"
+          cache: true
+
+      - name: Install staticcheck
+        run: go install honnef.co/go/tools/cmd/staticcheck@latest
+
+      - name: go build
+        run: go build ./...
+
+      - name: go vet
+        run: go vet ./...
+
+      - name: staticcheck
+        run: staticcheck ./...
+
+      - name: Unit tests (with race detector)
+        run: go test -race -timeout 120s ./internal/...
+
+      - name: Integration tests (Docker available on ubuntu runners)
+        run: go test -v -timeout 180s ./integration/...
+
+      - name: Fuzz (short run)
+        run: go test ./internal/cache/... -fuzz=FuzzCacheKey -fuzztime=10s
+
+      - name: Docker build (gateway)
+        run: docker build -t llm-gateway:ci .
+
+      - name: Docker build (fakeupstream)
+        run: docker build -t llm-gateway-fake:ci -f Dockerfile.fakeupstream .
+
+      - name: actionlint
+        uses: reviewdog/action-actionlint@v1
+        with:
+          reporter: github-check
+          fail_level: error

@@ -1,0 +1,43 @@
+# Binaries
+bin/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test output
+*.test
+*.out
+coverage.txt
+coverage.html
+
+# Build cache
+/dist/
+
+# Environment / secrets
+.env
+*.env
+
+# Scratch
+.scratch/
+*.scratch
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker generated
+docker-compose.override.yml
+
+# golangci
+.golangci-lint-cache/
+
+# Go workspace
+go.work
+go.work.sum
