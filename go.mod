@@ -1,4 +1,4 @@
-module github.com/yashash-pushkar/llm-gateway
+module github.com/mathuryashash/llm-gateway
 
 go 1.27.4
 

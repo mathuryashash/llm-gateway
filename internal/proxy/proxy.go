@@ -13,14 +13,14 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/yashash-pushkar/llm-gateway/internal/breaker"
-	"github.com/yashash-pushkar/llm-gateway/internal/cache"
-	"github.com/yashash-pushkar/llm-gateway/internal/config"
-	"github.com/yashash-pushkar/llm-gateway/internal/metrics"
-	"github.com/yashash-pushkar/llm-gateway/internal/middleware"
-	"github.com/yashash-pushkar/llm-gateway/internal/ratelimit"
-	"github.com/yashash-pushkar/llm-gateway/internal/router"
-	"github.com/yashash-pushkar/llm-gateway/internal/types"
+	"github.com/mathuryashash/llm-gateway/internal/breaker"
+	"github.com/mathuryashash/llm-gateway/internal/cache"
+	"github.com/mathuryashash/llm-gateway/internal/config"
+	"github.com/mathuryashash/llm-gateway/internal/metrics"
+	"github.com/mathuryashash/llm-gateway/internal/middleware"
+	"github.com/mathuryashash/llm-gateway/internal/ratelimit"
+	"github.com/mathuryashash/llm-gateway/internal/router"
+	"github.com/mathuryashash/llm-gateway/internal/types"
 )
 
 // RouterIface is the interface the proxy uses so tests can inject mocks.

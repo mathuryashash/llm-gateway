@@ -15,7 +15,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/yashash-pushkar/llm-gateway/internal/types"
+	"github.com/mathuryashash/llm-gateway/internal/types"
 )
 
 // Client is an HTTP client for one provider.

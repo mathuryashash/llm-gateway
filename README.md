@@ -47,7 +47,7 @@ graph TD
 
 ```bash
 # 1. Clone and build
-git clone https://github.com/yashash-pushkar/llm-gateway
+git clone https://github.com/mathuryashash/llm-gateway
 cd llm-gateway
 go build ./...
 

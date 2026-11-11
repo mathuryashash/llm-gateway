@@ -6,8 +6,8 @@ package router
 import (
 	"fmt"
 
-	"github.com/yashash-pushkar/llm-gateway/internal/config"
-	"github.com/yashash-pushkar/llm-gateway/internal/provider"
+	"github.com/mathuryashash/llm-gateway/internal/config"
+	"github.com/mathuryashash/llm-gateway/internal/provider"
 )
 
 // Route is one resolved (client, model) pair for an alias.

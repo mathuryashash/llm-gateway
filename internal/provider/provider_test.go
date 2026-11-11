@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yashash-pushkar/llm-gateway/internal/types"
+	"github.com/mathuryashash/llm-gateway/internal/types"
 )
 
 func fakeServer(t *testing.T, statusCode int, body string) *httptest.Server {

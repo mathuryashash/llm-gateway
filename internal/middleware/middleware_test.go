@@ -5,7 +5,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/yashash-pushkar/llm-gateway/internal/config"
+	"github.com/mathuryashash/llm-gateway/internal/config"
 )
 
 func TestRequestIDHeader(t *testing.T) {

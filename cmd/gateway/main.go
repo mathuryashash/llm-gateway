@@ -20,14 +20,14 @@ import (
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	"go.opentelemetry.io/otel/sdk/trace"
 
-	"github.com/yashash-pushkar/llm-gateway/internal/breaker"
-	"github.com/yashash-pushkar/llm-gateway/internal/cache"
-	"github.com/yashash-pushkar/llm-gateway/internal/config"
-	"github.com/yashash-pushkar/llm-gateway/internal/middleware"
-	"github.com/yashash-pushkar/llm-gateway/internal/provider"
-	"github.com/yashash-pushkar/llm-gateway/internal/proxy"
-	"github.com/yashash-pushkar/llm-gateway/internal/ratelimit"
-	"github.com/yashash-pushkar/llm-gateway/internal/router"
+	"github.com/mathuryashash/llm-gateway/internal/breaker"
+	"github.com/mathuryashash/llm-gateway/internal/cache"
+	"github.com/mathuryashash/llm-gateway/internal/config"
+	"github.com/mathuryashash/llm-gateway/internal/middleware"
+	"github.com/mathuryashash/llm-gateway/internal/provider"
+	"github.com/mathuryashash/llm-gateway/internal/proxy"
+	"github.com/mathuryashash/llm-gateway/internal/ratelimit"
+	"github.com/mathuryashash/llm-gateway/internal/router"
 )
 
 func main() {

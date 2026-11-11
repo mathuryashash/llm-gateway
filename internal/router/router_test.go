@@ -4,8 +4,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/yashash-pushkar/llm-gateway/internal/config"
-	"github.com/yashash-pushkar/llm-gateway/internal/provider"
+	"github.com/mathuryashash/llm-gateway/internal/config"
+	"github.com/mathuryashash/llm-gateway/internal/provider"
 )
 
 func TestRouterResolve(t *testing.T) {

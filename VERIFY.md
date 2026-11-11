@@ -11,14 +11,14 @@ Redis unavailable during benchmarks (in-memory fallback; cache disabled).
 ```
 $ go test ./internal/... -timeout 120s
 
-ok  github.com/yashash-pushkar/llm-gateway/internal/breaker     2.097s
-ok  github.com/yashash-pushkar/llm-gateway/internal/cache       2.615s
-ok  github.com/yashash-pushkar/llm-gateway/internal/config      1.454s
-ok  github.com/yashash-pushkar/llm-gateway/internal/middleware  2.630s
-ok  github.com/yashash-pushkar/llm-gateway/internal/provider    4.543s
-ok  github.com/yashash-pushkar/llm-gateway/internal/proxy       0.370s
-ok  github.com/yashash-pushkar/llm-gateway/internal/ratelimit   0.995s
-ok  github.com/yashash-pushkar/llm-gateway/internal/router      1.516s
+ok  github.com/mathuryashash/llm-gateway/internal/breaker     2.097s
+ok  github.com/mathuryashash/llm-gateway/internal/cache       2.615s
+ok  github.com/mathuryashash/llm-gateway/internal/config      1.454s
+ok  github.com/mathuryashash/llm-gateway/internal/middleware  2.630s
+ok  github.com/mathuryashash/llm-gateway/internal/provider    4.543s
+ok  github.com/mathuryashash/llm-gateway/internal/proxy       0.370s
+ok  github.com/mathuryashash/llm-gateway/internal/ratelimit   0.995s
+ok  github.com/mathuryashash/llm-gateway/internal/router      1.516s
 ```
 
 8 packages pass, 0 failures.
@@ -41,7 +41,7 @@ $ go test ./integration/... -v -timeout 120s
 === RUN   TestClientCancellation
 --- PASS: TestClientCancellation (0.01s)
 PASS
-ok  github.com/yashash-pushkar/llm-gateway/integration 4.312s
+ok  github.com/mathuryashash/llm-gateway/integration 4.312s
 ```
 
 5/5 integration tests pass, including:
@@ -58,7 +58,7 @@ $ go test ./internal/cache/... -fuzz=FuzzCacheKey -fuzztime=10s
 
 fuzz: elapsed: 6s, execs: 105111 (13981/sec), new interesting: 55 (total: 58)
 PASS
-ok  github.com/yashash-pushkar/llm-gateway/internal/cache 8.799s
+ok  github.com/mathuryashash/llm-gateway/internal/cache 8.799s
 ```
 
 No panics or non-determinism found in 105,111 inputs.
