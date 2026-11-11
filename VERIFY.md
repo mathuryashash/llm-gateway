@@ -112,7 +112,7 @@ No Redis → cache disabled (all MISS), rate limiting uses in-memory fallback.
 ## Smoke test (real LLM providers via gateway)
 
 ```
-$ python D:/build5/keys.py run -- python .scratch/smoke_test.py
+$ python .scratch/smoke_test.py   # provider keys exported in the shell env
 
   OK  model=demo        provider=fake    status=200 latency=  63ms cache=NONE
   OK  model=fast        provider=nebius  status=200 latency=1476ms cache=NONE
@@ -124,7 +124,7 @@ SMOKE TEST: PASS
 ```
 
 4/4 real calls succeeded (fake + 2 real providers via Nebius).
-Keys from env via `D:/build5/keys.py run` — never logged or committed.
+Keys are read from environment variables only; never logged or committed.
 
 ---
 
