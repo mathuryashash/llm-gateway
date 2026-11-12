@@ -6,6 +6,7 @@ package proxy
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"log/slog"
@@ -77,6 +78,13 @@ func (h *Handler) handleChat(w http.ResponseWriter, r *http.Request) {
 	// --- Parse request ---
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
+		// MaxBodySize wraps the body in http.MaxBytesReader. Requests that declare a
+		// Content-Length are rejected there; chunked uploads only hit the limit here.
+		var tooBig *http.MaxBytesError
+		if errors.As(err, &tooBig) {
+			h.writeError(w, http.StatusRequestEntityTooLarge, "request body too large", "request_too_large")
+			return
+		}
 		h.writeError(w, http.StatusBadRequest, "failed to read body", "bad_request")
 		return
 	}
@@ -297,8 +305,8 @@ func (h *Handler) handleModels(w http.ResponseWriter, r *http.Request) {
 		Object string `json:"object"`
 	}
 	type modelsResp struct {
-		Object string      `json:"object"`
-		Data   []modelObj  `json:"data"`
+		Object string     `json:"object"`
+		Data   []modelObj `json:"data"`
 	}
 	aliases := h.router.KnownAliases()
 	data := make([]modelObj, len(aliases))

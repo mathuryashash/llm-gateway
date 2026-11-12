@@ -12,9 +12,9 @@ import (
 
 // Route is one resolved (client, model) pair for an alias.
 type Route struct {
-	Client    *provider.Client
-	Model     string
-	RouteKey  string // unique identifier for breaker/metrics: "alias/providerName"
+	Client   *provider.Client
+	Model    string
+	RouteKey string // unique identifier for breaker/metrics: "alias/providerName"
 }
 
 // Router maps model aliases to ordered route lists.

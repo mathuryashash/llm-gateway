@@ -3,7 +3,7 @@
 // States:
 //   - Closed  : normal operation; failures counted.
 //   - Open    : all requests rejected immediately; entered after
-//               FailureThreshold consecutive failures.
+//     FailureThreshold consecutive failures.
 //   - HalfOpen: one probe request allowed; success → Closed, failure → Open.
 //
 // The breaker is goroutine-safe.

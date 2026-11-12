@@ -32,10 +32,10 @@ type RouteConfig struct {
 
 // ClientKey is a hashed (SHA-256 hex) client credential.
 type ClientKey struct {
-	Name         string `yaml:"name"`
-	HashedKey    string `yaml:"hashed_key"` // SHA-256 of the raw key, lowercase hex
-	RequestsMin  int    `yaml:"requests_min"`
-	DailyTokens  int    `yaml:"daily_tokens"`
+	Name        string `yaml:"name"`
+	HashedKey   string `yaml:"hashed_key"` // SHA-256 of the raw key, lowercase hex
+	RequestsMin int    `yaml:"requests_min"`
+	DailyTokens int    `yaml:"daily_tokens"`
 }
 
 // RateLimitConfig controls per-client throttling behaviour.
@@ -62,10 +62,10 @@ type RedisConfig struct {
 // BreakerConfig controls per-route circuit breaker thresholds.
 type BreakerConfig struct {
 	// FailureThreshold: consecutive failures before opening.
-	FailureThreshold int           `yaml:"failure_threshold"`
+	FailureThreshold int `yaml:"failure_threshold"`
 	// RecoverySec: how long to stay open before moving to half-open.
-	RecoverySec      int           `yaml:"recovery_sec"`
-	Recovery         time.Duration `yaml:"-"`
+	RecoverySec int           `yaml:"recovery_sec"`
+	Recovery    time.Duration `yaml:"-"`
 }
 
 // ServerConfig holds HTTP server tuning knobs.
@@ -195,6 +195,7 @@ func derive(cfg *Config) {
 
 // validate checks required fields and consistency.
 func validate(cfg *Config) error {
+	known := make(map[string]bool, len(cfg.Providers))
 	for i, p := range cfg.Providers {
 		if p.Name == "" {
 			return fmt.Errorf("config: provider[%d] missing name", i)
@@ -202,6 +203,7 @@ func validate(cfg *Config) error {
 		if p.BaseURL == "" {
 			return fmt.Errorf("config: provider %q missing base_url", p.Name)
 		}
+		known[p.Name] = true
 	}
 	for i, r := range cfg.Routes {
 		if r.Alias == "" {
@@ -212,6 +214,12 @@ func validate(cfg *Config) error {
 		}
 		if len(r.Models) != len(r.Providers) {
 			return fmt.Errorf("config: route %q: providers and models list length mismatch", r.Alias)
+		}
+		// A typo here used to load fine and only fail at request time as "no provider".
+		for _, name := range r.Providers {
+			if !known[name] {
+				return fmt.Errorf("config: route %q uses unknown provider %q", r.Alias, name)
+			}
 		}
 	}
 	return nil

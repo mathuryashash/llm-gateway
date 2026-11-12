@@ -26,9 +26,9 @@ import (
 type Decision int
 
 const (
-	Allowed Decision = iota
-	DeniedRPM   // rate limit: requests per minute
-	DeniedDaily // rate limit: daily token budget
+	Allowed     Decision = iota
+	DeniedRPM            // rate limit: requests per minute
+	DeniedDaily          // rate limit: daily token budget
 )
 
 func (d Decision) String() string {

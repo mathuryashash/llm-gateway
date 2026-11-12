@@ -2,6 +2,7 @@ package config
 
 import (
 	"os"
+	"strings"
 	"testing"
 )
 
@@ -94,5 +95,26 @@ func TestEnvOverride(t *testing.T) {
 	}
 	if cfg.LogLevel != "debug" {
 		t.Fatalf("env override for log_level expected debug got %s", cfg.LogLevel)
+	}
+}
+
+func TestValidateUnknownProviderInRoute(t *testing.T) {
+	content := `
+providers:
+  - name: groq
+    base_url: https://api.groq.com/openai/v1
+    key_env: GROQ_API_KEY
+routes:
+  - alias: fast
+    providers: [groq, gorq]
+    models: [llama-3.1-8b-instant, llama-3.1-8b-instant]
+`
+	f := t.TempDir() + "/typo.yaml"
+	if err := os.WriteFile(f, []byte(content), 0o600); err != nil {
+		t.Fatal(err)
+	}
+	_, err := Load(f)
+	if err == nil || !strings.Contains(err.Error(), "gorq") {
+		t.Fatalf("expected unknown-provider error naming gorq, got %v", err)
 	}
 }

@@ -26,6 +26,9 @@ jobs:
       - name: go build
         run: go build ./...
 
+      - name: gofmt
+        run: test -z "$(gofmt -l .)" || { gofmt -l .; exit 1; }
+
       - name: go vet
         run: go vet ./...
 

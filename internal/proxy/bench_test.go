@@ -15,8 +15,8 @@ import (
 	"github.com/mathuryashash/llm-gateway/internal/ratelimit"
 	"github.com/mathuryashash/llm-gateway/internal/router"
 	"github.com/mathuryashash/llm-gateway/internal/types"
-	"log/slog"
 	"io"
+	"log/slog"
 	"os"
 )
 

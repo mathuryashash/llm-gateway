@@ -230,3 +230,22 @@ func TestBreakerSkipsOpenRoute(t *testing.T) {
 		t.Fatalf("expected 200 from fallback, got %d body=%s", w2.Code, w2.Body.String())
 	}
 }
+
+// A chunked upload has no Content-Length, so only MaxBytesReader catches it.
+// It must come back as 413, the same as a declared oversize body, not 400.
+func TestHandleChatChunkedBodyTooLarge(t *testing.T) {
+	srv := fakeProvider(t, http.StatusOK, okResponse("test-model"), 0)
+	defer srv.Close()
+	client := provider.New("test", srv.URL, "key", 5*time.Second)
+	h := buildHandler(t, []router.Route{{Client: client, Model: "test-model", RouteKey: "fast/test"}})
+
+	big := bytes.Repeat([]byte("a"), 2048)
+	req := httptest.NewRequest(http.MethodPost, "/v1/chat/completions", bytes.NewReader(big))
+	req.ContentLength = -1 // unknown length, as with Transfer-Encoding: chunked
+	w := httptest.NewRecorder()
+	req.Body = http.MaxBytesReader(w, req.Body, 1024)
+	h.ServeHTTP(w, req)
+	if w.Code != http.StatusRequestEntityTooLarge {
+		t.Fatalf("expected 413 got %d, body: %s", w.Code, w.Body.String())
+	}
+}

@@ -79,8 +79,8 @@ func TestHalfOpenFailureReopens(t *testing.T) {
 	b.Allow()
 	b.RecordFailure()
 	time.Sleep(60 * time.Millisecond)
-	b.Allow()           // enter half-open
-	b.RecordFailure()   // fail the probe → back to open
+	b.Allow()         // enter half-open
+	b.RecordFailure() // fail the probe → back to open
 	if b.State() != StateOpen {
 		t.Fatal("expected open after half-open failure")
 	}
